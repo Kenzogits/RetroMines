@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "RetroMines",
+    "slug": "retromines",
+    "scheme": "retromines",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "statusBar": {
+      "hidden": true,
+      "translucent": true
+    },
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#050505" 
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.seeker.retromines"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#050505"
+      },
+      "package": "com.seeker.retromines",
+      "permissions": [
+        "INTERNET",
+        "VIBRATE"
+      ]
+    },
+    "plugins": [
+      "expo-font"
+    ]
+  }
+}
