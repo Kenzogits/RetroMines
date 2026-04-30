@@ -1,4 +1,5 @@
 Legal Compliance & Ownership Declaration (RetroMines)
+
 Last Updated: April 30, 2026 
 
 1. OWNERSHIP & INTELLECTUAL PROPERTY 
