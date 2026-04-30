@@ -41,8 +41,14 @@ You agree to use the Application only for legal purposes. Any use of the Applica
 7. LIMITATION OF LIABILITY
 TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL THE DEVELOPER BE LIABLE FOR ANY INCIDENTAL, SPECIAL, INDIRECT, OR CONSEQUENTIAL DAMAGES WHATSOEVER (INCLUDING LOSS OF PROFITS, DATA, OR DIGITAL ASSETS) ARISING OUT OF OR RELATED TO YOUR USE OR INABILITY TO USE THE APPLICATION.
 
-8. TERMINATION
+8.TRANSACTION FEES (GAS FEES) 
+You acknowledge that all transactions performed on the Solana blockchain through the Application incur network fees ("Gas Fees").
+Responsibility: These fees are paid directly to the network and are the sole responsibility of the user.
+
+Non-Refundable: The developer does not receive these fees and cannot refund any gas fees paid to the blockchain, regardless of the transaction outcome.
+
+9. TERMINATION
 This license is effective until terminated by you or the developer. Upon termination, you must cease all use of the Application and delete all copies.
 
-9. CONTACT US
+10. CONTACT US
 For support or inquiries regarding RetroMines, please contact: kenzorei@foxmail.com
