@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RetroMines | Official Portal</title>
+    <title>RetroMines | Game Portal</title>
     <!-- 引入像素字体 -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
@@ -12,9 +12,13 @@
             --win-blue: #000080;
             --border-light: #FFFFFF;
             --border-dark: #808080;
-            --mine-grid: #BDBDBD; /* 扫雷经典背景灰 */
+            --grid-bg: #bdbdbd;
+            --num-1: #0000FF;
+            --num-2: #008000;
+            --num-3: #FF0000;
         }
 
+        /* 核心背景：模拟进行中的扫雷对局 */
         body {
             margin: 0;
             padding: 20px;
@@ -23,29 +27,34 @@
             justify-content: center;
             min-height: 100vh;
             font-family: 'Press Start 2P', cursive;
-            /* 制作扫雷游戏面板格纹 */
-            background-color: var(--mine-grid);
+            background-color: var(--grid-bg);
+            /* 使用格子纹理模拟未挖掘区域 */
             background-image: 
                 linear-gradient(var(--border-dark) 2px, transparent 2px),
                 linear-gradient(90deg, var(--border-dark) 2px, transparent 2px),
                 linear-gradient(var(--border-light) 1px, transparent 1px),
                 linear-gradient(90deg, var(--border-light) 1px, transparent 1px);
-            background-size: 40px 40px, 40px 40px, 40px 40px, 40px 40px;
-            background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+            background-size: 50px 50px;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* 游戏窗口样式 */
+
+
+        /* 游戏主窗口 */
         .window {
+            position: relative;
+            z-index: 10;
             background-color: var(--win-gray);
             border: 4px solid;
             border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
-            box-shadow: 10px 10px 0px rgba(0,0,0,0.2);
+            box-shadow: 15px 15px 0px rgba(0,0,0,0.3);
             width: 100%;
-            max-width: 550px;
+            max-width: 520px;
             padding: 4px;
         }
 
-        /* 标题栏 */
+        /* 系统标题栏 */
         .title-bar {
             background: var(--win-blue);
             color: white;
@@ -53,70 +62,71 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 12px;
-            margin-bottom: 20px;
+            font-size: 10px;
         }
 
-        .title-bar-text { margin-left: 5px; }
-
         .content {
-            padding: 20px;
+            padding: 25px;
             text-align: center;
         }
 
-        /* 核心标志区 */
-        .game-status-box {
-            background-color: #000;
-            border: 4px inset var(--border-gray);
-            padding: 20px;
-            margin-bottom: 30px;
+        /* 顶部状态栏：模拟扫雷的计时器和剩余地雷数 */
+        .status-bar {
+            background: #000;
+            border: 3px inset #fff;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            margin-bottom: 20px;
+            color: #FF0000;
+            font-size: 18px;
+        }
+
+        .game-header {
+            margin-bottom: 25px;
         }
 
         .game-title {
-            color: #00FF00; /* 经典的数字 3 或 1 的绿色 */
-            font-size: 20px;
-            margin: 0 0 10px 0;
-            text-shadow: 2px 2px #005500;
+            color: #000;
+            font-size: 22px;
+            margin: 0;
+            text-decoration: underline;
         }
 
-        .pkg-name {
-            color: #FFFF00;
-            font-size: 8px;
-        }
-
-        /* 链接按钮 */
+        /* 按钮列表 */
         .menu-list {
             display: grid;
-            gap: 12px;
+            gap: 15px;
         }
 
         .btn {
             background-color: var(--win-gray);
             border: 4px solid;
             border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
-            padding: 15px;
+            padding: 18px;
             color: #000;
             text-decoration: none;
             font-size: 10px;
             display: block;
-            text-transform: uppercase;
+            position: relative;
         }
 
+        /* 按钮按下效果 */
         .btn:active {
             border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
-            padding: 17px 13px 13px 17px;
+            transform: translate(2px, 2px);
         }
 
-        .btn.primary {
+        .btn.github {
             background-color: #00FF00;
-            font-weight: bold;
         }
 
-        .lang-footer {
+        /* 底部信息 */
+        .lang-info {
             margin-top: 30px;
             font-size: 8px;
-            color: #555;
-            line-height: 1.5;
+            color: #404040;
+            text-transform: uppercase;
         }
     </style>
 </head>
@@ -124,34 +134,38 @@
 
 <div class="window">
     <div class="title-bar">
-        <div class="title-bar-text">RETROMINES_EXPLORER.EXE</div>
+        <div class="title-bar-text">RETROMINES_SYSTEM</div>
         <div class="title-bar-controls">
-            <span style="border:1px solid #fff; padding: 0 4px;">?</span>
-            <span style="border:1px solid #fff; padding: 0 4px;">X</span>
+            <span>[?]</span> <span>[X]</span>
         </div>
     </div>
 
     <div class="content">
-        <div class="game-status-box">
+        <!-- 模拟扫雷顶部数字面板 -->
+        <div class="status-bar">
+            <div title="Mines Remaining">008</div>
+            <div title="Status">🙂</div>
+            <div title="Time Elapsed">059</div>
+        </div>
+
+        <div class="game-header">
             <h1 class="game-title">RETROMINES</h1>
-            <div class="pkg-name">PACKAGE: com.seeker.retromines</div>
+            <p style="font-size: 8px; color: #555; margin-top: 10px;">ID: com.crypto.retromines</p>
         </div>
 
         <nav class="menu-list">
-            <!-- 对应你的代码仓库 -->
-            <a href="https://github.com/kenzogits/RetroMines" class="btn primary">OPEN GITHUB SOURCE</a>
+            <!-- 对应你的 GitHub 仓库 -->
+            <a href="https://github.com/kenzogits/RetroMines" class="btn github">SOURCE_CODE.SH</a>
             
-            <div style="height: 10px;"></div>
-
-            <!-- 对应合规页面 -->
-            <a href="https://kenzogits.github.io/RetroMines/EULA" class="btn">EULA (END USER LICENSE)</a>
-            <a href="https://kenzogits.github.io/RetroMines/TOS" class="btn">TERMS OF SERVICE (TOS)</a>
-            <a href="https://kenzogits.github.io/RetroMines/LEGAL" class="btn">LEGAL COMPLIANCE</a>
-            <a href="https://kenzogits.github.io/RetroMines/PRIVACY" class="btn">PRIVACY POLICY</a>
+            <a href="https://kenzogits.github.io/RetroMines/EULA" class="btn">EULA_AGREEMENT</a>
+            <a href="https://kenzogits.github.io/RetroMines/TOS" class="btn">TERMS_OF_SERVICE</a>
+            <a href="https://kenzogits.github.io/RetroMines/LEGAL" class="btn">LEGAL_COMPLIANCE</a>
+            <a href="https://kenzogits.github.io/RetroMines/PRIVACY" class="btn">PRIVACY_POLICY</a>
         </nav>
 
-        <div class="lang-footer">
-            &copy; 2026 RETROMINES DEV TEAM. ALL RIGHTS RESERVED.
+        <div class="lang-info">
+
+            © 2026 RetroMines Development Team. ALL RIGHTS RESERVED.
         </div>
     </div>
 </div>
